@@ -14,7 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      landing_settings: {
+        Row: {
+          affiliate_url: string | null
+          custom_body_html: string | null
+          custom_head_html: string | null
+          fb_pixel_id: string | null
+          id: number
+          postback_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          affiliate_url?: string | null
+          custom_body_html?: string | null
+          custom_head_html?: string | null
+          fb_pixel_id?: string | null
+          id?: number
+          postback_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          affiliate_url?: string | null
+          custom_body_html?: string | null
+          custom_head_html?: string | null
+          fb_pixel_id?: string | null
+          id?: number
+          postback_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
