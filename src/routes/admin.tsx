@@ -25,6 +25,8 @@ function Admin() {
   const [head, setHead] = useState(settings.custom_head_html);
   const [body, setBody] = useState(settings.custom_body_html);
   const [postback, setPostback] = useState(settings.postback_url);
+  const [method, setMethod] = useState<"GET" | "POST">(settings.postback_method);
+  const [pbBody, setPbBody] = useState(settings.postback_body);
   const [affiliate, setAffiliate] = useState(settings.affiliate_url);
 
   const onUnlock = async (e: React.FormEvent) => {
@@ -47,6 +49,8 @@ function Admin() {
         custom_head_html: head,
         custom_body_html: body,
         postback_url: postback,
+        postback_method: method,
+        postback_body: pbBody,
         affiliate_url: affiliate,
       },
     });
@@ -141,13 +145,48 @@ function Admin() {
 
         <Field
           label="Postback URL (Server-to-Server)"
-          hint="URL brand cung cấp. Được gọi từ server khi user bấm CTA. Hỗ trợ biến {code}, {event}, {ts}."
+          hint="Dán 'URL to fire' từ trang tạo postback của brand. Hỗ trợ biến {code}, {event}, {conversionType}, {ts}."
         >
           <input
             value={postback}
             onChange={(e) => setPostback(e.target.value)}
             placeholder="https://brand.com/postback?code={code}&event={event}&ts={ts}"
             className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-primary"
+          />
+        </Field>
+
+        <Field
+          label="HTTP method"
+          hint="Trang brand yêu cầu GET hay POST — chọn đúng để postback được nhận."
+        >
+          <div className="inline-flex overflow-hidden rounded-lg border border-input">
+            {(["GET", "POST"] as const).map((m) => (
+              <button
+                key={m}
+                type="button"
+                onClick={() => setMethod(m)}
+                className={`px-5 py-2 text-sm font-semibold transition ${
+                  method === m
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-background text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {m}
+              </button>
+            ))}
+          </div>
+        </Field>
+
+        <Field
+          label="JSON body (chỉ dùng khi method = POST)"
+          hint='Dán JSON template từ brand. Có thể chèn biến {code}, {event}, {conversionType}, {ts}. Các biến {conversionId}, {payout}, {revenue}... của brand cứ để nguyên, brand sẽ tự thay.'
+        >
+          <textarea
+            value={pbBody}
+            onChange={(e) => setPbBody(e.target.value)}
+            rows={10}
+            placeholder='{\n  "conversionType": "{conversionType}",\n  "affS1": "{code}"\n}'
+            className="w-full rounded-lg border border-input bg-background px-4 py-2.5 font-mono text-xs outline-none focus:border-primary"
           />
         </Field>
 
