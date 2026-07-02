@@ -6,6 +6,8 @@ export type LandingSettings = {
   custom_head_html: string;
   custom_body_html: string;
   postback_url: string;
+  postback_method: "GET" | "POST";
+  postback_body: string;
   affiliate_url: string;
 };
 
@@ -14,6 +16,8 @@ const DEFAULTS: LandingSettings = {
   custom_head_html: "",
   custom_body_html: "",
   postback_url: "",
+  postback_method: "GET",
+  postback_body: "",
   affiliate_url: "https://jobcopilot.com/",
 };
 
@@ -21,7 +25,7 @@ export const getSettings = createServerFn({ method: "GET" }).handler(async () =>
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const { data, error } = await supabaseAdmin
     .from("landing_settings")
-    .select("fb_pixel_id, custom_head_html, custom_body_html, postback_url, affiliate_url")
+    .select("fb_pixel_id, custom_head_html, custom_body_html, postback_url, postback_method, postback_body, affiliate_url")
     .eq("id", 1)
     .maybeSingle();
   if (error) {
@@ -37,6 +41,8 @@ const saveSchema = z.object({
   custom_head_html: z.string().max(20000).default(""),
   custom_body_html: z.string().max(20000).default(""),
   postback_url: z.string().max(2000).default(""),
+  postback_method: z.enum(["GET", "POST"]).default("GET"),
+  postback_body: z.string().max(20000).default(""),
   affiliate_url: z.string().max(2000).default(""),
 });
 
@@ -56,6 +62,8 @@ export const saveSettings = createServerFn({ method: "POST" })
         custom_head_html: data.custom_head_html,
         custom_body_html: data.custom_body_html,
         postback_url: data.postback_url,
+        postback_method: data.postback_method,
+        postback_body: data.postback_body,
         affiliate_url: data.affiliate_url,
         updated_at: new Date().toISOString(),
       });
@@ -80,17 +88,31 @@ export const firePostback = createServerFn({ method: "POST" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { data: row } = await supabaseAdmin
       .from("landing_settings")
-      .select("postback_url")
+      .select("postback_url, postback_method, postback_body")
       .eq("id", 1)
       .maybeSingle();
     const url = row?.postback_url?.trim();
     if (!url) return { ok: true as const, skipped: true };
+    const method = (row?.postback_method || "GET").toUpperCase();
+    const bodyTpl = row?.postback_body || "";
     try {
-      const finalUrl = url
-        .replace(/\{code\}/g, encodeURIComponent(data.code))
-        .replace(/\{event\}/g, encodeURIComponent(data.event))
-        .replace(/\{ts\}/g, String(Date.now()));
-      await fetch(finalUrl, { method: "GET" });
+      const replace = (s: string, encode: boolean) =>
+        s
+          .replace(/\{code\}/g, encode ? encodeURIComponent(data.code) : data.code)
+          .replace(/\{event\}/g, encode ? encodeURIComponent(data.event) : data.event)
+          .replace(/\{conversionType\}/g, encode ? encodeURIComponent(data.event) : data.event)
+          .replace(/\{ts\}/g, String(Date.now()));
+      const finalUrl = replace(url, true);
+      if (method === "POST") {
+        const finalBody = bodyTpl ? replace(bodyTpl, false) : "";
+        await fetch(finalUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: finalBody,
+        });
+      } else {
+        await fetch(finalUrl, { method: "GET" });
+      }
       return { ok: true as const };
     } catch (e) {
       console.error("postback failed", e);
