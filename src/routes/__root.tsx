@@ -93,17 +93,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "JobCopilot Mã Giảm Giá 50% — Ưu Đãi Chính Thức" },
+      { title: "JobCopilot Promo Code: 50% Off Premium (Official Discount)" },
       {
         name: "description",
         content:
-          "Nhận mã giảm giá 50% cho JobCopilot Premium. Tự động ứng tuyển hàng loạt việc làm chỉ trong vài phút.",
+          "Get 50% off JobCopilot Premium with an official promo code. Auto apply to 50 jobs a day and land more interviews — trusted by 100,000+ job seekers.",
       },
       { name: "author", content: "JobCopilot Promo" },
-      { property: "og:title", content: "JobCopilot Mã Giảm Giá 50%" },
+      { property: "og:title", content: "JobCopilot Promo Code — 50% Off Premium" },
       {
         property: "og:description",
-        content: "Kích hoạt AI Copilot tự động apply việc làm. Ưu đãi giới hạn.",
+        content: "Activate the AI copilot that auto applies to jobs for you. Limited-time 50% off.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
