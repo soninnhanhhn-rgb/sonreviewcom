@@ -313,7 +313,7 @@ function Index() {
             <div
               key={s.n}
               className="rounded-3xl border border-border bg-card p-6"
-              style={{ boxShadow: "var(--shadow-soft)" }}
+              style={{ boxShadow: "0 8px 24px -12px color-mix(in oklab, var(--brand-violet) 20%, transparent)" }}
             >
               <div
                 className="inline-flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold"
@@ -376,7 +376,7 @@ function Index() {
               <div
                 key={t}
                 className="rounded-3xl border border-border bg-card p-6"
-                style={{ boxShadow: "var(--shadow-soft)" }}
+                style={{ boxShadow: "0 8px 24px -12px color-mix(in oklab, var(--brand-violet) 20%, transparent)" }}
               >
                 <div
                   className="inline-flex h-11 w-11 items-center justify-center rounded-2xl"
@@ -450,7 +450,7 @@ function Index() {
               <figure
                 key={r.name}
                 className="flex flex-col rounded-3xl border border-border bg-card p-6"
-                style={{ boxShadow: "var(--shadow-soft)" }}
+                style={{ boxShadow: "0 8px 24px -12px color-mix(in oklab, var(--brand-violet) 20%, transparent)" }}
               >
                 <div className="flex items-center gap-3">
                   <div
