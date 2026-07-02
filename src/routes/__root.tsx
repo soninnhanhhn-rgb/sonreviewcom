@@ -100,13 +100,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "Get 50% off JobCopilot Premium with an official promo code. Auto apply to 50 jobs a day and land more interviews — trusted by 100,000+ job seekers.",
       },
       { name: "author", content: "JobCopilot Promo" },
-      { property: "og:title", content: "JobCopilot Promo Code — 50% Off Premium" },
+      { property: "og:title", content: "JobCopilot Promo Code: 50% Off Premium (Official Discount)" },
       {
         property: "og:description",
         content: "Activate the AI copilot that auto applies to jobs for you. Limited-time 50% off.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "JobCopilot Promo Code: 50% Off Premium (Official Discount)" },
+      { name: "description", content: "A simple, visual landing page builder for promotional discount codes and Facebook conversion campaigns." },
+      { property: "og:description", content: "A simple, visual landing page builder for promotional discount codes and Facebook conversion campaigns." },
+      { name: "twitter:description", content: "A simple, visual landing page builder for promotional discount codes and Facebook conversion campaigns." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/0df62c75-4907-4609-891b-a508d68eee76/id-preview-3f552a74--bb8515f0-1d8f-4801-9878-6055eabc796c.lovable.app-1782987228791.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/0df62c75-4907-4609-891b-a508d68eee76/id-preview-3f552a74--bb8515f0-1d8f-4801-9878-6055eabc796c.lovable.app-1782987228791.png" },
     ],
     links: [
       {
