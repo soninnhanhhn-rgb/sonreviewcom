@@ -11,6 +11,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { getSettings } from "../lib/settings.functions";
 
 function NotFoundComponent() {
   return (
@@ -73,18 +74,39 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  loader: async () => {
+    try {
+      return { settings: await getSettings() };
+    } catch {
+      return {
+        settings: {
+          fb_pixel_id: "",
+          custom_head_html: "",
+          custom_body_html: "",
+          postback_url: "",
+          affiliate_url: "https://jobcopilot.com/",
+        },
+      };
+    }
+  },
   head: () => ({
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "JobCopilot Mã Giảm Giá 50% — Ưu Đãi Chính Thức" },
+      {
+        name: "description",
+        content:
+          "Nhận mã giảm giá 50% cho JobCopilot Premium. Tự động ứng tuyển hàng loạt việc làm chỉ trong vài phút.",
+      },
+      { name: "author", content: "JobCopilot Promo" },
+      { property: "og:title", content: "JobCopilot Mã Giảm Giá 50%" },
+      {
+        property: "og:description",
+        content: "Kích hoạt AI Copilot tự động apply việc làm. Ưu đãi giới hạn.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
       {
@@ -101,12 +123,38 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 });
 
 function RootShell({ children }: { children: ReactNode }) {
+  const data = Route.useLoaderData();
+  const settings = data?.settings;
+  const pixelId = settings?.fb_pixel_id?.trim();
+  const pixelScript = pixelId
+    ? `!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','${pixelId}');fbq('track','PageView');`
+    : "";
   return (
     <html lang="en">
       <head>
         <HeadContent />
+        {pixelScript ? (
+          <script dangerouslySetInnerHTML={{ __html: pixelScript }} />
+        ) : null}
+        {settings?.custom_head_html ? (
+          <div dangerouslySetInnerHTML={{ __html: settings.custom_head_html }} />
+        ) : null}
       </head>
       <body>
+        {pixelId ? (
+          <noscript>
+            <img
+              height="1"
+              width="1"
+              style={{ display: "none" }}
+              alt=""
+              src={`https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1`}
+            />
+          </noscript>
+        ) : null}
+        {settings?.custom_body_html ? (
+          <div dangerouslySetInnerHTML={{ __html: settings.custom_body_html }} />
+        ) : null}
         {children}
         <Scripts />
       </body>
