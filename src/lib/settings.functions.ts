@@ -243,9 +243,7 @@ export const sendTestEvent = createServerFn({ method: "POST" })
         { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) },
       );
       const text = await res.text();
-      let json: unknown = text;
-      try { json = JSON.parse(text); } catch { /* keep */ }
-      return { ok: res.ok, status: res.status, response: json };
+      return { ok: res.ok, status: res.status, response: text };
     } catch (e) {
       return { ok: false as const, error: e instanceof Error ? e.message : "Failed" };
     }
