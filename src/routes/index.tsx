@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
 import { getSettings, firePostback } from "@/lib/settings.functions";
-import { Check, Copy, Sparkles, Zap, Clock, Target, Star } from "lucide-react";
+import { Sparkles, Zap, Clock, Target, Star } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   loader: async () => ({ settings: await getSettings() }),
@@ -78,39 +78,39 @@ function Index() {
         style={{ background: "var(--gradient-hero)" }}
       >
         <div className="mx-auto max-w-6xl px-6 pt-8 pb-20 sm:pt-12 sm:pb-28">
-          <nav className="flex items-center justify-between text-primary-foreground">
+          <nav className="flex items-center justify-between text-foreground">
             <div className="flex items-center gap-2 font-bold text-lg tracking-tight">
               <span
                 className="inline-flex h-8 w-8 items-center justify-center rounded-lg"
-                style={{ background: "var(--brand-lime)", color: "var(--brand-navy-deep)" }}
+                style={{ background: "var(--brand-violet)", color: "var(--primary-foreground)" }}
               >
                 <Sparkles className="h-4 w-4" />
               </span>
-              JobCopilot<span className="opacity-60">·Promo</span>
+              JobCopilot<span className="opacity-50">·Promo</span>
             </div>
             <a
               href="#codes"
-              className="text-sm font-medium opacity-90 hover:opacity-100"
+              className="text-sm font-medium text-muted-foreground hover:text-foreground"
             >
               Xem mã ↓
             </a>
           </nav>
 
-          <div className="mt-16 max-w-3xl text-primary-foreground">
+          <div className="mt-16 max-w-3xl text-foreground">
             <div
-              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1 text-xs font-medium backdrop-blur"
+              className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-3 py-1 text-xs font-medium"
             >
               <span
                 className="inline-block h-2 w-2 rounded-full"
-                style={{ background: "var(--brand-lime)" }}
+                style={{ background: "var(--brand-violet)" }}
               />
               Ưu đãi chính thức · Áp dụng toàn cầu
             </div>
             <h1 className="mt-5 text-4xl font-extrabold leading-[1.05] sm:text-6xl">
-              Giảm <span style={{ color: "var(--brand-lime)" }}>50%</span> JobCopilot Premium
+              Giảm <span style={{ color: "var(--brand-violet)" }}>50%</span> JobCopilot Premium
               — Auto apply việc làm 24/7
             </h1>
-            <p className="mt-5 max-w-2xl text-base sm:text-lg opacity-80">
+            <p className="mt-5 max-w-2xl text-base sm:text-lg text-muted-foreground">
               AI Copilot ứng tuyển thay bạn tới 50 công việc/ngày trên hơn 500.000
               công ty. Nhận mã bên dưới, dán vào ô "Add Promotion Code" khi thanh toán.
             </p>
@@ -120,34 +120,34 @@ function Index() {
                 href="#codes"
                 className="inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold transition hover:-translate-y-0.5"
                 style={{
-                  background: "var(--brand-lime)",
-                  color: "var(--brand-navy-deep)",
-                  boxShadow: "var(--shadow-lime)",
+                  background: "var(--brand-violet)",
+                  color: "var(--primary-foreground)",
+                  boxShadow: "var(--shadow-violet)",
                 }}
               >
                 Nhận mã giảm giá ngay
                 <Zap className="h-4 w-4" />
               </a>
-              <div className="flex items-center gap-2 text-sm opacity-80">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <div className="flex" aria-label="5 sao">
                   {[0, 1, 2, 3, 4].map((i) => (
-                    <Star key={i} className="h-4 w-4 fill-current" style={{ color: "var(--brand-lime)" }} />
+                    <Star key={i} className="h-4 w-4 fill-current" style={{ color: "var(--brand-violet)" }} />
                   ))}
                 </div>
                 <span>Được 100.000+ ứng viên tin dùng</span>
               </div>
             </div>
 
-            <div className="mt-14 grid grid-cols-3 gap-4 max-w-xl text-primary-foreground">
+            <div className="mt-14 grid grid-cols-3 gap-4 max-w-xl">
               {[
                 { icon: Zap, label: "Apply nhanh hơn", value: "50x" },
                 { icon: Clock, label: "Tiết kiệm mỗi tuần", value: "10h+" },
                 { icon: Target, label: "Nhiều phỏng vấn hơn", value: "10x" },
               ].map(({ icon: Icon, label, value }) => (
-                <div key={label} className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 backdrop-blur">
-                  <Icon className="h-5 w-5 opacity-80" />
+                <div key={label} className="rounded-2xl border border-border bg-card p-4">
+                  <Icon className="h-5 w-5" style={{ color: "var(--brand-violet)" }} />
                   <div className="mt-3 text-2xl font-bold">{value}</div>
-                  <div className="text-xs opacity-70">{label}</div>
+                  <div className="text-xs text-muted-foreground">{label}</div>
                 </div>
               ))}
             </div>
@@ -177,7 +177,7 @@ function Index() {
               style={
                 p.highlight
                   ? {
-                      background: "var(--brand-navy-deep)",
+                      background: "var(--brand-violet)",
                       color: "var(--primary-foreground)",
                       boxShadow: "var(--shadow-brand)",
                     }
@@ -189,7 +189,7 @@ function Index() {
                   className="rounded-full px-3 py-1 text-xs font-semibold"
                   style={
                     p.highlight
-                      ? { background: "var(--brand-lime)", color: "var(--brand-navy-deep)" }
+                      ? { background: "rgba(255,255,255,0.2)", color: "var(--primary-foreground)" }
                       : { background: "var(--muted)", color: "var(--foreground)" }
                   }
                 >
@@ -203,17 +203,12 @@ function Index() {
               </p>
 
               <div
-                className="mt-6 flex items-center justify-between rounded-xl border border-dashed px-4 py-3"
+                className="mt-6 flex items-center justify-center rounded-xl border border-dashed px-4 py-3"
                 style={{
                   borderColor: p.highlight ? "rgba(255,255,255,0.25)" : "var(--border)",
                 }}
               >
                 <span className="font-mono text-lg font-bold tracking-widest">{p.code}</span>
-                {copied === p.code ? (
-                  <Check className="h-4 w-4" style={{ color: "var(--brand-lime)" }} />
-                ) : (
-                  <Copy className="h-4 w-4 opacity-60" />
-                )}
               </div>
 
               <button
@@ -222,12 +217,11 @@ function Index() {
                 style={
                   p.highlight
                     ? {
-                        background: "var(--brand-lime)",
-                        color: "var(--brand-navy-deep)",
-                        boxShadow: "var(--shadow-lime)",
+                        background: "oklch(1 0 0)",
+                        color: "var(--brand-violet-deep)",
                       }
                     : {
-                        background: "var(--brand-navy)",
+                        background: "var(--brand-violet)",
                         color: "var(--primary-foreground)",
                       }
                 }
@@ -251,7 +245,7 @@ function Index() {
               <div key={s.n} className="rounded-2xl border border-border bg-card p-6">
                 <div
                   className="text-sm font-bold"
-                  style={{ color: "var(--brand-navy)" }}
+                  style={{ color: "var(--brand-violet)" }}
                 >
                   {s.n}
                 </div>
