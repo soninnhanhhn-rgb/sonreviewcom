@@ -14,6 +14,54 @@ export type Database = {
   }
   public: {
     Tables: {
+      event_logs: {
+        Row: {
+          click_id: string | null
+          created_at: string
+          currency: string
+          error_message: string | null
+          event_id: string | null
+          event_name: string
+          id: string
+          meta_response: Json | null
+          request_payload: Json | null
+          source_ip: string | null
+          status: string
+          status_code: number | null
+          value: number
+        }
+        Insert: {
+          click_id?: string | null
+          created_at?: string
+          currency?: string
+          error_message?: string | null
+          event_id?: string | null
+          event_name?: string
+          id?: string
+          meta_response?: Json | null
+          request_payload?: Json | null
+          source_ip?: string | null
+          status?: string
+          status_code?: number | null
+          value?: number
+        }
+        Update: {
+          click_id?: string | null
+          created_at?: string
+          currency?: string
+          error_message?: string | null
+          event_id?: string | null
+          event_name?: string
+          id?: string
+          meta_response?: Json | null
+          request_payload?: Json | null
+          source_ip?: string | null
+          status?: string
+          status_code?: number | null
+          value?: number
+        }
+        Relationships: []
+      }
       landing_settings: {
         Row: {
           affiliate_url: string | null

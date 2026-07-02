@@ -123,6 +123,15 @@ async function handle(request: Request) {
   if (testCode) capiBody.test_event_code = testCode;
 
   const endpoint = `https://graph.facebook.com/v19.0/${encodeURIComponent(pixelId)}/events?access_token=${encodeURIComponent(token)}`;
+  const logRow = {
+    event_name: eventName,
+    value: Number.isFinite(value) ? value : 0,
+    currency,
+    click_id: fbclid || null,
+    event_id: eventId || null,
+    source_ip: clientIp || null,
+    request_payload: payload as never,
+  };
   try {
     const res = await fetch(endpoint, {
       method: "POST",
@@ -138,11 +147,29 @@ async function handle(request: Request) {
     }
     if (!res.ok) {
       console.error("Meta CAPI error", res.status, respText);
+      await supabaseAdmin.from("event_logs").insert({
+        ...logRow,
+        status: "error",
+        status_code: res.status,
+        meta_response: respJson as never,
+        error_message: typeof respJson === "object" ? null : String(respJson).slice(0, 500),
+      });
       return Response.json({ ok: false, status: res.status, response: respJson }, { status: 502 });
     }
+    await supabaseAdmin.from("event_logs").insert({
+      ...logRow,
+      status: "ok",
+      status_code: res.status,
+      meta_response: respJson as never,
+    });
     return Response.json({ ok: true, event: eventName, value, currency, response: respJson });
   } catch (e) {
     console.error("CAPI fetch failed", e);
+    await supabaseAdmin.from("event_logs").insert({
+      ...logRow,
+      status: "error",
+      error_message: e instanceof Error ? e.message.slice(0, 500) : "fetch failed",
+    });
     return Response.json({ ok: false, error: "Không gọi được Meta CAPI" }, { status: 500 });
   }
 }
