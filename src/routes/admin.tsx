@@ -28,6 +28,12 @@ function Admin() {
   const [method, setMethod] = useState<"GET" | "POST">(settings.postback_method);
   const [pbBody, setPbBody] = useState(settings.postback_body);
   const [affiliate, setAffiliate] = useState(settings.affiliate_url);
+  const [capiToken, setCapiToken] = useState(settings.fb_capi_token);
+  const [testEventCode, setTestEventCode] = useState(settings.fb_test_event_code);
+  const [subidParam, setSubidParam] = useState(settings.subid_param);
+  const [currency, setCurrency] = useState(settings.default_currency);
+  const [defaultValue, setDefaultValue] = useState(String(settings.default_value ?? 0));
+  const [webhookSecret, setWebhookSecret] = useState(settings.webhook_secret);
 
   const onUnlock = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,6 +58,12 @@ function Admin() {
         postback_method: method,
         postback_body: pbBody,
         affiliate_url: affiliate,
+        fb_capi_token: capiToken,
+        fb_test_event_code: testEventCode,
+        subid_param: subidParam,
+        default_currency: currency,
+        default_value: Number(defaultValue) || 0,
+        webhook_secret: webhookSecret,
       },
     });
     setSaving(false);
@@ -130,6 +142,76 @@ function Admin() {
             value={pixel}
             onChange={(e) => setPixel(e.target.value)}
             placeholder="1234567890123456"
+            className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm font-mono outline-none focus:border-primary"
+          />
+        </Field>
+
+        <Field
+          label="Facebook CAPI Access Token"
+          hint="Vào Events Manager → Settings → Conversions API → Generate access token. Dùng để bắn sự kiện server-to-server lên Meta khi brand báo có đơn."
+        >
+          <textarea
+            value={capiToken}
+            onChange={(e) => setCapiToken(e.target.value)}
+            rows={4}
+            placeholder="EAAG... (chuỗi dài, không xuống dòng)"
+            className="w-full rounded-lg border border-input bg-background px-4 py-2.5 font-mono text-xs outline-none focus:border-primary"
+          />
+        </Field>
+
+        <Field
+          label="Facebook Test Event Code"
+          hint="Nhập trong lúc debug (VD: TEST83724) để xem event ở tab Test Events. Bỏ trống khi chạy thật, tránh làm nhiễu số liệu."
+        >
+          <input
+            value={testEventCode}
+            onChange={(e) => setTestEventCode(e.target.value)}
+            placeholder="TEST83724"
+            className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm font-mono outline-none focus:border-primary"
+          />
+        </Field>
+
+        <Field
+          label="SubID param (chứa fbclid)"
+          hint="Tên biến mà network affiliate của brand dùng để đựng fbclid (VD: sub1, sub2, click_id, s1). Landing sẽ tự bắt fbclid trên URL và ghép vào link brand theo tên này, brand trả ngược lại qua webhook."
+        >
+          <input
+            value={subidParam}
+            onChange={(e) => setSubidParam(e.target.value)}
+            placeholder="sub1"
+            className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm font-mono outline-none focus:border-primary"
+          />
+        </Field>
+
+        <Field label="Currency mặc định" hint="Dùng khi payload webhook không kèm 'currency'. VD: USD, VND, EUR.">
+          <input
+            value={currency}
+            onChange={(e) => setCurrency(e.target.value.toUpperCase())}
+            placeholder="USD"
+            className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm font-mono outline-none focus:border-primary"
+          />
+        </Field>
+
+        <Field label="Value mặc định (hoa hồng/đơn)" hint="Dùng khi webhook không kèm 'value' hoặc 'revenue'. Có thể để 0 nếu brand luôn gửi kèm giá trị.">
+          <input
+            value={defaultValue}
+            onChange={(e) => setDefaultValue(e.target.value)}
+            type="number"
+            step="0.01"
+            min="0"
+            placeholder="0"
+            className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm font-mono outline-none focus:border-primary"
+          />
+        </Field>
+
+        <Field
+          label="Webhook secret (dùng cho endpoint nhận conversion từ brand)"
+          hint="Chuỗi ngẫu nhiên (VD: 32 ký tự). Brand phải gọi endpoint /api/public/conversion?secret=... khớp chuỗi này thì đơn mới được bắn lên Meta. Bỏ trống = endpoint bị tắt."
+        >
+          <input
+            value={webhookSecret}
+            onChange={(e) => setWebhookSecret(e.target.value)}
+            placeholder="a-random-long-string"
             className="w-full rounded-lg border border-input bg-background px-4 py-2.5 text-sm font-mono outline-none focus:border-primary"
           />
         </Field>
