@@ -21,6 +21,8 @@ export type Database = {
           custom_head_html: string | null
           fb_pixel_id: string | null
           id: number
+          postback_body: string
+          postback_method: string
           postback_url: string | null
           updated_at: string
         }
@@ -30,6 +32,8 @@ export type Database = {
           custom_head_html?: string | null
           fb_pixel_id?: string | null
           id?: number
+          postback_body?: string
+          postback_method?: string
           postback_url?: string | null
           updated_at?: string
         }
@@ -39,6 +43,8 @@ export type Database = {
           custom_head_html?: string | null
           fb_pixel_id?: string | null
           id?: number
+          postback_body?: string
+          postback_method?: string
           postback_url?: string | null
           updated_at?: string
         }
