@@ -130,7 +130,7 @@ async function handle(request: Request) {
     click_id: fbclid || null,
     event_id: eventId || null,
     source_ip: clientIp || null,
-    request_payload: payload as unknown as Record<string, unknown>,
+    request_payload: payload as never,
   };
   try {
     const res = await fetch(endpoint, {
