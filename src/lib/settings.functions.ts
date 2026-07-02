@@ -9,6 +9,12 @@ export type LandingSettings = {
   postback_method: "GET" | "POST";
   postback_body: string;
   affiliate_url: string;
+  fb_capi_token: string;
+  fb_test_event_code: string;
+  subid_param: string;
+  default_currency: string;
+  default_value: number;
+  webhook_secret: string;
 };
 
 const DEFAULTS: LandingSettings = {
@@ -19,13 +25,19 @@ const DEFAULTS: LandingSettings = {
   postback_method: "GET",
   postback_body: "",
   affiliate_url: "https://jobcopilot.com/",
+  fb_capi_token: "",
+  fb_test_event_code: "",
+  subid_param: "sub1",
+  default_currency: "USD",
+  default_value: 0,
+  webhook_secret: "",
 };
 
 export const getSettings = createServerFn({ method: "GET" }).handler(async () => {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const { data, error } = await supabaseAdmin
     .from("landing_settings")
-    .select("fb_pixel_id, custom_head_html, custom_body_html, postback_url, postback_method, postback_body, affiliate_url")
+    .select("fb_pixel_id, custom_head_html, custom_body_html, postback_url, postback_method, postback_body, affiliate_url, fb_capi_token, fb_test_event_code, subid_param, default_currency, default_value, webhook_secret")
     .eq("id", 1)
     .maybeSingle();
   if (error) {
@@ -44,6 +56,12 @@ const saveSchema = z.object({
   postback_method: z.enum(["GET", "POST"]).default("GET"),
   postback_body: z.string().max(20000).default(""),
   affiliate_url: z.string().max(2000).default(""),
+  fb_capi_token: z.string().max(2000).default(""),
+  fb_test_event_code: z.string().max(64).default(""),
+  subid_param: z.string().max(32).default("sub1"),
+  default_currency: z.string().max(8).default("USD"),
+  default_value: z.coerce.number().min(0).default(0),
+  webhook_secret: z.string().max(200).default(""),
 });
 
 export const saveSettings = createServerFn({ method: "POST" })
@@ -65,6 +83,12 @@ export const saveSettings = createServerFn({ method: "POST" })
         postback_method: data.postback_method,
         postback_body: data.postback_body,
         affiliate_url: data.affiliate_url,
+        fb_capi_token: data.fb_capi_token,
+        fb_test_event_code: data.fb_test_event_code,
+        subid_param: data.subid_param,
+        default_currency: data.default_currency,
+        default_value: data.default_value,
+        webhook_secret: data.webhook_secret,
         updated_at: new Date().toISOString(),
       });
     if (error) return { ok: false as const, error: error.message };
