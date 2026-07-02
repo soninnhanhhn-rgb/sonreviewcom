@@ -97,7 +97,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Get 50% off JobCopilot Premium with an official promo code. Auto apply to 50 jobs a day and land more interviews — trusted by 100,000+ job seekers.",
+          "Get 50% off JobCopilot Premium with official promo codes. AI applies to 50 jobs/day across 500,000+ companies. New user discount available now.",
       },
       { name: "author", content: "JobCopilot Promo" },
       { property: "og:title", content: "JobCopilot Promo Code: 50% Off Premium (Official Discount)" },
