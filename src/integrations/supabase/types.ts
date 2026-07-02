@@ -19,34 +19,52 @@ export type Database = {
           affiliate_url: string | null
           custom_body_html: string | null
           custom_head_html: string | null
+          default_currency: string
+          default_value: number
+          fb_capi_token: string
           fb_pixel_id: string | null
+          fb_test_event_code: string
           id: number
           postback_body: string
           postback_method: string
           postback_url: string | null
+          subid_param: string
           updated_at: string
+          webhook_secret: string
         }
         Insert: {
           affiliate_url?: string | null
           custom_body_html?: string | null
           custom_head_html?: string | null
+          default_currency?: string
+          default_value?: number
+          fb_capi_token?: string
           fb_pixel_id?: string | null
+          fb_test_event_code?: string
           id?: number
           postback_body?: string
           postback_method?: string
           postback_url?: string | null
+          subid_param?: string
           updated_at?: string
+          webhook_secret?: string
         }
         Update: {
           affiliate_url?: string | null
           custom_body_html?: string | null
           custom_head_html?: string | null
+          default_currency?: string
+          default_value?: number
+          fb_capi_token?: string
           fb_pixel_id?: string | null
+          fb_test_event_code?: string
           id?: number
           postback_body?: string
           postback_method?: string
           postback_url?: string | null
+          subid_param?: string
           updated_at?: string
+          webhook_secret?: string
         }
         Relationships: []
       }

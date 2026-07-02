@@ -62,11 +62,26 @@ function Index() {
     // Fire server-side postback (S2S)
     void postback({ data: { code, event: "Lead" } }).catch(() => {});
 
-    // Open brand link with code appended
+    // Build outbound URL: promo code + fbclid mapped into brand's subid param
     const base = (settings.affiliate_url || "https://jobcopilot.com/").trim();
-    const url = base.includes("?")
-      ? `${base}&promo=${encodeURIComponent(code)}`
-      : `${base}?promo=${encodeURIComponent(code)}`;
+    const params = new URLSearchParams();
+    params.set("promo", code);
+    const subKey = (settings.subid_param || "sub1").trim();
+    if (subKey) {
+      // fbclid can arrive in the URL or be stored from a previous visit
+      const urlParams = new URLSearchParams(window.location.search);
+      let fbclid = urlParams.get("fbclid") || "";
+      try {
+        if (!fbclid) fbclid = window.localStorage.getItem("_fbclid") || "";
+        if (urlParams.get("fbclid")) {
+          window.localStorage.setItem("_fbclid", urlParams.get("fbclid")!);
+        }
+      } catch {
+        // ignore storage errors
+      }
+      if (fbclid) params.set(subKey, fbclid);
+    }
+    const url = base + (base.includes("?") ? "&" : "?") + params.toString();
     window.open(url, "_blank", "noopener");
   };
 
