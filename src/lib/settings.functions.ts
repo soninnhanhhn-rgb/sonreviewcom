@@ -102,6 +102,155 @@ export const verifyAdmin = createServerFn({ method: "POST" })
     return { ok: data.password === process.env.ADMIN_PASSWORD };
   });
 
+// ================= Analytics & Event Logs =================
+
+const authedSchema = z.object({ password: z.string().min(1) });
+
+function assertAdmin(password: string) {
+  const expected = process.env.ADMIN_PASSWORD;
+  if (!expected || password !== expected) {
+    throw new Error("Unauthorized");
+  }
+}
+
+export const getOverviewStats = createServerFn({ method: "POST" })
+  .inputValidator((input: unknown) => authedSchema.parse(input))
+  .handler(async ({ data }) => {
+    assertAdmin(data.password);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const since = new Date();
+    since.setDate(since.getDate() - 30);
+    const { data: rows } = await supabaseAdmin
+      .from("event_logs")
+      .select("created_at, event_name, status, value, currency")
+      .gte("created_at", since.toISOString())
+      .order("created_at", { ascending: true });
+    const list = rows ?? [];
+
+    // KPIs
+    const totalLeads = list.filter((r) => r.event_name === "Lead" || r.event_name === "CompleteRegistration").length;
+    const active = list.filter((r) => r.status === "ok").length;
+    const purchase = list.filter((r) => r.event_name === "Purchase").length;
+    const revenue = list
+      .filter((r) => r.event_name === "Purchase" && r.status === "ok")
+      .reduce((s, r) => s + Number(r.value || 0), 0);
+
+    // Daily buckets
+    const daysMap = new Map<string, { leads: number; purchase: number; revenue: number }>();
+    for (let i = 29; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      const key = d.toISOString().slice(0, 10);
+      daysMap.set(key, { leads: 0, purchase: 0, revenue: 0 });
+    }
+    for (const r of list) {
+      const key = String(r.created_at).slice(0, 10);
+      const b = daysMap.get(key);
+      if (!b) continue;
+      if (r.event_name === "Purchase") {
+        b.purchase += 1;
+        if (r.status === "ok") b.revenue += Number(r.value || 0);
+      } else {
+        b.leads += 1;
+      }
+    }
+    const daily = Array.from(daysMap.entries()).map(([date, v]) => ({
+      date: date.slice(5), // MM-DD
+      leads: v.leads,
+      purchase: v.purchase,
+      revenue: Math.round(v.revenue * 100) / 100,
+    }));
+
+    // Status distribution
+    const okCount = list.filter((r) => r.status === "ok").length;
+    const errCount = list.length - okCount;
+
+    return {
+      kpis: {
+        totalLeads,
+        active,
+        purchase,
+        revenue: Math.round(revenue * 100) / 100,
+      },
+      daily,
+      status: [
+        { name: "Success", value: okCount },
+        { name: "Error", value: errCount },
+      ],
+      conversionRate:
+        list.length > 0 ? Math.round((purchase / list.length) * 1000) / 10 : 0,
+    };
+  });
+
+const listLogsSchema = z.object({ password: z.string().min(1), limit: z.number().min(1).max(200).default(50) });
+export const listEventLogs = createServerFn({ method: "POST" })
+  .inputValidator((input: unknown) => listLogsSchema.parse(input))
+  .handler(async ({ data }) => {
+    assertAdmin(data.password);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: rows, error } = await supabaseAdmin
+      .from("event_logs")
+      .select("id, created_at, event_name, status, status_code, value, currency, click_id, event_id, source_ip, error_message")
+      .order("created_at", { ascending: false })
+      .limit(data.limit);
+    if (error) return { logs: [] as never[], error: error.message };
+    return { logs: rows ?? [] };
+  });
+
+const testEventSchema = z.object({
+  password: z.string().min(1),
+  event_name: z.string().default("Purchase"),
+  value: z.coerce.number().min(0).default(1),
+  currency: z.string().default("USD"),
+  email: z.string().optional().default(""),
+});
+export const sendTestEvent = createServerFn({ method: "POST" })
+  .inputValidator((input: unknown) => testEventSchema.parse(input))
+  .handler(async ({ data }) => {
+    assertAdmin(data.password);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data: row } = await supabaseAdmin
+      .from("landing_settings")
+      .select("fb_pixel_id, fb_capi_token, fb_test_event_code")
+      .eq("id", 1)
+      .maybeSingle();
+    const pixel = (row?.fb_pixel_id || "").trim();
+    const token = (row?.fb_capi_token || "").trim();
+    const testCode = (row?.fb_test_event_code || "").trim();
+    if (!pixel || !token) return { ok: false as const, error: "Missing Pixel ID or CAPI Token" };
+
+    const { createHash } = await import("crypto");
+    const userData: Record<string, unknown> = {};
+    if (data.email) userData.em = [createHash("sha256").update(data.email.trim().toLowerCase()).digest("hex")];
+
+    const body: Record<string, unknown> = {
+      data: [
+        {
+          event_name: data.event_name,
+          event_time: Math.floor(Date.now() / 1000),
+          action_source: "website",
+          event_source_url: "https://sonreviewcom.lovable.app/",
+          event_id: `test_${Date.now()}`,
+          user_data: userData,
+          custom_data: { currency: data.currency, value: data.value },
+        },
+      ],
+    };
+    if (testCode) body.test_event_code = testCode;
+    try {
+      const res = await fetch(
+        `https://graph.facebook.com/v19.0/${encodeURIComponent(pixel)}/events?access_token=${encodeURIComponent(token)}`,
+        { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) },
+      );
+      const text = await res.text();
+      let json: unknown = text;
+      try { json = JSON.parse(text); } catch { /* keep */ }
+      return { ok: res.ok, status: res.status, response: json };
+    } catch (e) {
+      return { ok: false as const, error: e instanceof Error ? e.message : "Failed" };
+    }
+  });
+
 const postbackSchema = z.object({
   code: z.string().max(64),
   event: z.string().max(32).default("Lead"),
