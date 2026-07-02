@@ -20,21 +20,21 @@ type Promo = {
 const PROMOS: Promo[] = [
   {
     code: "50OFF",
-    title: "Ưu đãi phổ thông",
-    desc: "Giảm 50% tháng đầu tiên gói JobCopilot Premium. Áp dụng cho người dùng mới.",
-    badge: "Phổ biến nhất",
+    title: "Standard Offer",
+    desc: "Save 50% on your first month of JobCopilot Premium. For new users only.",
+    badge: "Most Popular",
     highlight: true,
   },
   {
     code: "STUDENT50",
-    title: "Ưu đãi sinh viên",
-    desc: "Đang đi học hoặc vừa tốt nghiệp trong 6 tháng? Giảm ngay 50% để auto apply việc làm.",
-    badge: "Sinh viên",
+    title: "Student Discount",
+    desc: "Currently in college or graduated within 6 months? Take 50% off and auto apply to jobs.",
+    badge: "Students",
   },
   {
     code: "ENG50",
-    title: "Kỹ sư & Developer",
-    desc: "Dành riêng cho dân kỹ thuật. Giảm 50% để tập trung săn công việc mơ ước.",
+    title: "Engineers & Developers",
+    desc: "Built for software and technical talent. 50% off so you can focus on landing your dream role.",
     badge: "Engineering",
   },
 ];
@@ -89,7 +89,7 @@ function Index() {
               <Sparkles className="h-4 w-4" />
             </span>
             <span className="truncate">
-              JobCopilot<span className="opacity-50"> ·Promo</span>
+              JobCopilot<span className="opacity-50"> · Promo</span>
             </span>
           </div>
           <span
@@ -100,7 +100,7 @@ function Index() {
               boxShadow: "var(--shadow-violet)",
             }}
           >
-            Xem mã ↓
+            Get code ↓
           </span>
         </a>
       </div>
@@ -119,15 +119,15 @@ function Index() {
                 className="inline-block h-2 w-2 rounded-full"
                 style={{ background: "var(--brand-violet)" }}
               />
-              Ưu đãi chính thức · Áp dụng toàn cầu
+              Official offer · Works worldwide
             </div>
             <h1 className="mt-5 text-4xl font-extrabold leading-[1.05] sm:text-6xl">
-              Giảm <span style={{ color: "var(--brand-violet)" }}>50%</span> JobCopilot Premium
-              — Auto apply việc làm 24/7
+              Save <span style={{ color: "var(--brand-violet)" }}>50%</span> on JobCopilot Premium
+              — Auto apply to jobs 24/7
             </h1>
             <p className="mt-5 max-w-2xl text-base sm:text-lg text-muted-foreground">
-              AI Copilot ứng tuyển thay bạn tới 50 công việc/ngày trên hơn 500.000
-              công ty. Nhận mã bên dưới, dán vào ô "Add Promotion Code" khi thanh toán.
+              Your AI copilot applies to up to 50 jobs a day across 500,000+ companies.
+              Grab a code below and paste it in the "Add Promotion Code" field at checkout.
             </p>
 
             <div className="mt-8 flex flex-wrap gap-3">
@@ -140,24 +140,24 @@ function Index() {
                   boxShadow: "var(--shadow-violet)",
                 }}
               >
-                Nhận mã giảm giá ngay
+                Get my promo code
                 <Zap className="h-4 w-4" />
               </a>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <div className="flex" aria-label="5 sao">
+                <div className="flex" aria-label="5 stars">
                   {[0, 1, 2, 3, 4].map((i) => (
                     <Star key={i} className="h-4 w-4 fill-current" style={{ color: "var(--brand-violet)" }} />
                   ))}
                 </div>
-                <span>Được 100.000+ ứng viên tin dùng</span>
+                <span>Trusted by 100,000+ job seekers</span>
               </div>
             </div>
 
             <div className="mt-14 grid grid-cols-3 gap-4 max-w-xl">
               {[
-                { icon: Zap, label: "Apply nhanh hơn", value: "50x" },
-                { icon: Clock, label: "Tiết kiệm mỗi tuần", value: "10h+" },
-                { icon: Target, label: "Nhiều phỏng vấn hơn", value: "10x" },
+                { icon: Zap, label: "Faster applications", value: "50x" },
+                { icon: Clock, label: "Saved every week", value: "10h+" },
+                { icon: Target, label: "More interviews", value: "10x" },
               ].map(({ icon: Icon, label, value }) => (
                 <div key={label} className="rounded-2xl border border-border bg-card p-4">
                   <Icon className="h-5 w-5" style={{ color: "var(--brand-violet)" }} />
@@ -173,10 +173,10 @@ function Index() {
       {/* Codes */}
       <section id="codes" className="mx-auto max-w-6xl px-6 py-20">
         <div className="mb-10 max-w-2xl">
-          <h2 className="text-3xl font-bold sm:text-4xl">Chọn mã phù hợp với bạn</h2>
+          <h2 className="text-3xl font-bold sm:text-4xl">Pick the promo code that fits you</h2>
           <p className="mt-3 text-muted-foreground">
-            Bấm "Lấy mã & mở JobCopilot" — mã tự copy vào clipboard, tab mới sẽ mở
-            trang JobCopilot để bạn dán vào ô khuyến mãi khi thanh toán.
+            Click "Get code & open JobCopilot" — we'll copy the code to your clipboard and open
+            JobCopilot in a new tab so you can paste it in the promo field at checkout.
           </p>
         </div>
 
@@ -241,7 +241,7 @@ function Index() {
                       }
                 }
               >
-                {copied === p.code ? "Đã copy — đang mở tab..." : "Lấy mã & mở JobCopilot"}
+                {copied === p.code ? "Copied — opening tab..." : "Get code & open JobCopilot"}
                 <Zap className="h-4 w-4" />
               </button>
             </article>
@@ -250,12 +250,12 @@ function Index() {
 
         {/* Steps */}
         <div className="mt-20">
-          <h3 className="text-2xl font-bold sm:text-3xl">3 bước để kích hoạt ưu đãi</h3>
+          <h3 className="text-2xl font-bold sm:text-3xl">Redeem your discount in 3 steps</h3>
           <div className="mt-8 grid gap-6 md:grid-cols-3">
             {[
-              { n: "01", t: "Chọn mã bên trên", d: "Bấm nút để copy mã và mở JobCopilot ở tab mới." },
-              { n: "02", t: "Đăng ký / Đăng nhập", d: "Tạo tài khoản miễn phí hoặc đăng nhập tài khoản có sẵn." },
-              { n: "03", t: "Dán mã lúc checkout", d: "Dán mã vào ô 'Add Promotion Code' — giảm giá áp dụng ngay." },
+              { n: "01", t: "Pick a code above", d: "Click a button to copy the code and open JobCopilot in a new tab." },
+              { n: "02", t: "Sign up or log in", d: "Create a free account or sign in to your existing one." },
+              { n: "03", t: "Paste at checkout", d: "Drop the code in the 'Add Promotion Code' field — the discount applies instantly." },
             ].map((s) => (
               <div key={s.n} className="rounded-2xl border border-border bg-card p-6">
                 <div
@@ -270,45 +270,23 @@ function Index() {
             ))}
           </div>
         </div>
-
-        {/* FAQ */}
-        <div className="mt-20 grid gap-6 rounded-3xl p-8 md:grid-cols-2" style={{ background: "var(--muted)" }}>
-          <div>
-            <h3 className="text-2xl font-bold">Câu hỏi thường gặp</h3>
-            <p className="mt-2 text-sm text-muted-foreground">Các thông tin cần biết trước khi dùng mã.</p>
-          </div>
-          <div className="space-y-5 text-sm">
-            {[
-              { q: "Có dùng được nhiều mã cùng lúc không?", a: "Không, mỗi tài khoản chỉ áp dụng 1 mã cho lần mua đầu tiên." },
-              { q: "Ưu đãi kéo dài bao lâu?", a: "Giảm giá áp dụng cho tháng đầu tiên. Có thể huỷ bất kỳ lúc nào." },
-              { q: "Mã áp dụng cho gói nào?", a: "Áp dụng cho tất cả các gói: theo tuần, tháng và quý." },
-              { q: "Dùng ở Việt Nam được không?", a: "Có. JobCopilot hoạt động toàn cầu, hỗ trợ lọc theo quốc gia/timezone." },
-            ].map((f) => (
-              <div key={f.q} className="border-b border-border/60 pb-4 last:border-0">
-                <div className="font-semibold">{f.q}</div>
-                <div className="mt-1 text-muted-foreground">{f.a}</div>
-              </div>
-            ))}
-          </div>
-        </div>
       </section>
 
-      {/* Giới thiệu — Cách JobCopilot hoạt động */}
+      {/* How JobCopilot works */}
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="mx-auto max-w-3xl text-center">
           <h2 className="text-3xl font-bold sm:text-4xl">
-            Cách <span style={{ color: "var(--brand-violet)" }}>JobCopilot</span> hoạt động
+            How <span style={{ color: "var(--brand-violet)" }}>JobCopilot</span> works
           </h2>
           <p className="mt-3 text-muted-foreground">
-            Chỉ cần thiết lập một lần đơn giản, sau đó trợ lý AI của bạn sẽ tự động
-            ứng tuyển các công việc thay bạn.
+            A simple one-time setup, then your AI assistant automatically applies to jobs for you.
           </p>
         </div>
         <div className="mt-10 grid gap-6 md:grid-cols-3">
           {[
-            { n: 1, t: "Chọn tiêu chí việc làm", d: "Cho trợ lý biết những công việc bạn muốn tìm, sử dụng nhiều bộ lọc và tuỳ chọn khác nhau." },
-            { n: 2, t: "Tải lên CV & sàng lọc", d: "Tải lên sơ yếu lý lịch và trả lời một vài câu hỏi sàng lọc — chỉ một lần duy nhất." },
-            { n: 3, t: "AI ứng tuyển mỗi ngày", d: "Mỗi ngày, trợ lý sẽ tìm những công việc phù hợp và tự động điền đơn xin việc thay bạn." },
+            { n: 1, t: "Set your job criteria", d: "Tell the assistant the roles you want with detailed filters, locations, and salary ranges." },
+            { n: 2, t: "Upload your resume", d: "Upload your resume and answer a handful of screening questions — just once." },
+            { n: 3, t: "AI applies daily", d: "Every day, your copilot finds matching jobs and submits tailored applications for you." },
           ].map((s) => (
             <div
               key={s.n}
@@ -328,49 +306,49 @@ function Index() {
         </div>
       </section>
 
-      {/* Tại sao nên sử dụng JobCopilot */}
+      {/* Why use JobCopilot */}
       <section
         className="py-20"
         style={{ background: "var(--gradient-hero)" }}
       >
         <div className="mx-auto max-w-6xl px-6">
           <div className="mx-auto max-w-3xl text-center">
-            <h2 className="text-3xl font-bold sm:text-4xl">Tại sao nên sử dụng JobCopilot?</h2>
+            <h2 className="text-3xl font-bold sm:text-4xl">Why choose JobCopilot?</h2>
             <p className="mt-3 text-muted-foreground">
-              Những lợi ích tuyệt vời khi ứng tuyển việc làm tự động bằng trí tuệ nhân tạo.
+              The real benefits of automating your job search with AI.
             </p>
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             {[
               {
                 icon: Search,
-                t: "Tìm kiếm thêm các cuộc phỏng vấn",
-                d: "Trung bình cần nộp 50–100 đơn để có 1 lời mời phỏng vấn. Với JobCopilot, bạn có thể gửi tới 50 đơn xin việc được cá nhân hoá mỗi ngày.",
+                t: "Land more interviews",
+                d: "It takes 50–100 applications on average to get one interview. JobCopilot sends up to 50 personalized applications every single day.",
               },
               {
                 icon: Rocket,
-                t: "Đừng bao giờ bỏ lỡ cơ hội",
-                d: "Trợ lý AI tìm việc mới đăng hàng ngày trên hơn 500.000 trang tuyển dụng — bạn không bao giờ nộp đơn quá muộn nữa.",
+                t: "Never miss an opportunity",
+                d: "Your AI assistant scans 500,000+ job boards daily for fresh listings — you never apply too late again.",
               },
               {
                 icon: Settings2,
-                t: "Tự động ứng tuyển đúng việc",
-                d: "Cấu hình bộ lọc chi tiết, AI tự động điều chỉnh CV cho từng vị trí và học theo phản hồi của bạn theo thời gian.",
+                t: "Apply to the right jobs",
+                d: "Set granular filters and the AI tailors your resume to each role while learning from your feedback over time.",
               },
               {
                 icon: Clock,
-                t: "Tiết kiệm hàng giờ mỗi tuần",
-                d: "Không còn dành hàng giờ điền form nhàm chán. Lấy lại quyền kiểm soát thời gian cho những điều thực sự quan trọng.",
+                t: "Save hours every week",
+                d: "Stop wasting evenings filling out repetitive forms. Reclaim your time for what actually matters.",
               },
               {
                 icon: ShieldCheck,
-                t: "Hãy tự tin ứng tuyển",
-                d: "Chỉ ứng tuyển vào những công việc đã được xác minh trên trang tuyển dụng chính thức — an toàn hơn, không tin giả mạo.",
+                t: "Apply with confidence",
+                d: "Only submits to verified listings on official career pages — safer applications with no scams or fake postings.",
               },
               {
                 icon: Users,
-                t: "Cộng đồng 100.000+ người dùng",
-                d: "Tham gia cùng hàng trăm nghìn ứng viên đang tự động hoá hành trình tìm việc mỗi ngày bằng AI.",
+                t: "Join 100,000+ users",
+                d: "Sit alongside hundreds of thousands of job seekers automating their search with AI every day.",
               },
             ].map(({ icon: Icon, t, d }) => (
               <div
@@ -392,25 +370,25 @@ function Index() {
         </div>
       </section>
 
-      {/* Các tính năng của JobCopilot */}
+      {/* Features */}
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="mx-auto max-w-3xl text-center">
-          <h2 className="text-3xl font-bold sm:text-4xl">Các tính năng của JobCopilot</h2>
+          <h2 className="text-3xl font-bold sm:text-4xl">Everything JobCopilot does for you</h2>
           <p className="mt-3 text-muted-foreground">
-            Hơn 9 sản phẩm tìm việc thiết yếu được tích hợp trong một giải pháp duy nhất.
+            9+ essential job search tools bundled into one AI-powered platform.
           </p>
         </div>
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {[
-            "Auto Apply 50 đơn/ngày",
-            "Tối ưu CV theo từng job",
-            "Cover letter cá nhân hoá",
-            "Trả lời câu hỏi sàng lọc",
-            "Lọc theo mức lương & địa điểm",
-            "Theo dõi tiến trình ứng tuyển",
-            "Tìm email nhà tuyển dụng",
-            "Cảnh báo việc mới mỗi ngày",
-            "Hỗ trợ đa quốc gia & timezone",
+            "Auto apply to 50 jobs/day",
+            "Resume tailored to every job",
+            "Personalized cover letters",
+            "Auto answers to screener questions",
+            "Filter by salary & location",
+            "Application tracking dashboard",
+            "Recruiter email finder",
+            "Daily new-job alerts",
+            "Multi-country & timezone support",
           ].map((feat) => (
             <div
               key={feat}
@@ -426,7 +404,7 @@ function Index() {
         </div>
       </section>
 
-      {/* Đánh giá người dùng */}
+      {/* Testimonials */}
       <section
         className="py-20"
         style={{ background: "var(--gradient-hero)" }}
@@ -434,18 +412,18 @@ function Index() {
         <div className="mx-auto max-w-6xl px-6">
           <div className="mx-auto max-w-3xl text-center">
             <h2 className="text-3xl font-bold sm:text-4xl">
-              Tham gia cùng hơn <span style={{ color: "var(--brand-violet)" }}>100.000</span> người dùng
+              Join <span style={{ color: "var(--brand-violet)" }}>100,000+</span> job seekers
             </h2>
             <p className="mt-3 text-muted-foreground">
-              Họ đang tự động hoá quy trình ứng tuyển việc làm của mình bằng AI.
+              Already automating their job search with AI.
             </p>
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {[
-              { name: "Jeremy W.", role: "Kỹ sư phần mềm", text: "JobCopilot là ứng dụng hỗ trợ tìm việc tốt nhất tôi từng dùng. Nó ứng tuyển chính xác hơn nhiều so với các app khác." },
-              { name: "Abria P.", role: "Chuyên viên Marketing số", text: "Trợ lý AI đã nộp đơn vào hàng trăm vị trí và tôi nhận được lời mời phỏng vấn ngay trong tuần đầu tiên." },
-              { name: "Lukas D.", role: "Kỹ sư Full Stack", text: "Cực kỳ ấn tượng với thiết kế đơn giản và cách bố trí hấp dẫn. Các ứng dụng tự động hoá cực kỳ hữu ích." },
-              { name: "Helen N.", role: "Chăm sóc Khách hàng", text: "Việc tìm việc bớt căng thẳng hơn rất nhiều nhờ JobCopilot. Không cần ngồi cả ngày để nộp đơn nữa." },
+              { name: "Jeremy W.", role: "Software Engineer", text: "JobCopilot is the best job search tool I've ever used. It applies far more accurately than the other apps I tried." },
+              { name: "Abria P.", role: "Digital Marketer", text: "The AI assistant applied to hundreds of roles and I had interview invites in my inbox in the first week." },
+              { name: "Lukas D.", role: "Full Stack Engineer", text: "Really impressed with the clean design and layout. The auto-apply features are incredibly useful." },
+              { name: "Helen N.", role: "Customer Support", text: "Job hunting is so much less stressful with JobCopilot. I don't have to spend all day submitting applications anymore." },
             ].map((r) => (
               <figure
                 key={r.name}
@@ -464,7 +442,7 @@ function Index() {
                     <div className="truncate text-xs text-muted-foreground">{r.role}</div>
                   </div>
                 </div>
-                <div className="mt-3 flex" aria-label="5 sao">
+                <div className="mt-3 flex" aria-label="5 stars">
                   {[0, 1, 2, 3, 4].map((i) => (
                     <Star key={i} className="h-4 w-4 fill-current" style={{ color: "var(--brand-violet)" }} />
                   ))}
@@ -476,7 +454,7 @@ function Index() {
             ))}
           </div>
 
-          {/* CTA cuối */}
+          {/* Final CTA */}
           <div
             className="mx-auto mt-14 max-w-3xl rounded-3xl p-10 text-center"
             style={{
@@ -484,7 +462,7 @@ function Index() {
             }}
           >
             <h3 className="text-2xl font-bold sm:text-3xl">
-              Sẵn sàng tự động hoá quy trình nộp đơn xin việc?
+              Ready to automate your job applications?
             </h3>
             <a
               href="#codes"
@@ -495,7 +473,7 @@ function Index() {
                 boxShadow: "var(--shadow-violet)",
               }}
             >
-              Lấy mã giảm 50% ngay
+              Get my 50% off code
               <Zap className="h-4 w-4" />
             </a>
           </div>
@@ -503,7 +481,7 @@ function Index() {
       </section>
 
       <footer className="border-t border-border py-8 text-center text-xs text-muted-foreground">
-        Trang ưu đãi độc lập giới thiệu mã giảm giá JobCopilot chính thức. ©{" "}
+        Independent promo page featuring official JobCopilot discount codes. ©{" "}
         {new Date().getFullYear()}
       </footer>
     </div>
